@@ -67,6 +67,7 @@ void HDRImageViewerRenderer::CreateDeviceIndependentResources()
     IFT(SimpleTonemapEffect::Register(fact));
     IFT(SdrOverlayEffect::Register(fact));
     IFT(LuminanceHeatmapEffect::Register(fact));
+    IFT(LuminanceHeatmapLiliumEffect::Register(fact));
     IFT(MaxLuminanceEffect::Register(fact));
     IFT(SphereMapEffect::Register(fact));
 }
@@ -174,6 +175,12 @@ void HDRImageViewerRenderer::SetRenderOptions(
     case RenderEffectKind::LuminanceHeatmap:
         m_finalOutput = m_whiteScaleEffect.Get();
         m_whiteScaleEffect->SetInputEffect(0, m_heatmapEffect.Get());
+        break;
+
+    // Effect graph: ImageSource > ColorManagement > [Optional GainMapMerge] > Heatmap > WhiteScale
+    case RenderEffectKind::LuminanceHeatmapLilium:
+        m_finalOutput = m_whiteScaleEffect.Get();
+        m_whiteScaleEffect->SetInputEffect(0, m_heatmapLiliumEffect.Get());
         break;
 
     // Effect graph: ImageSource > ColorManagement > [Optional GainMapMerge] > MaxLuminance > WhiteScale
@@ -473,6 +480,7 @@ void HDRImageViewerRenderer::CreateImageDependentResources()
     IFT(context->CreateEffect(CLSID_D2D1WhiteLevelAdjustment, &m_sdrWhiteScaleEffect));
     IFT(context->CreateEffect(CLSID_CustomSdrOverlayEffect, &m_sdrOverlayEffect));
     IFT(context->CreateEffect(CLSID_CustomLuminanceHeatmapEffect, &m_heatmapEffect));
+    IFT(context->CreateEffect(CLSID_CustomLuminanceHeatmapLiliumEffect, &m_heatmapLiliumEffect));
     IFT(context->CreateEffect(CLSID_CustomMaxLuminanceEffect, &m_maxLuminanceEffect));
     IFT(context->CreateEffect(CLSID_CustomSphereMapEffect, &m_sphereMapEffect));
 
@@ -499,6 +507,7 @@ void HDRImageViewerRenderer::CreateImageDependentResources()
     // For the following effects, we want white level scale to be applied after
     // tonemapping (otherwise brightness adjustments will affect numerical values).
     m_heatmapEffect->SetInputEffect(0, m_gainMapMergeEffect.Get());
+    m_heatmapLiliumEffect->SetInputEffect(0, m_gainMapMergeEffect.Get());
     m_maxLuminanceEffect->SetInputEffect(0, m_gainMapMergeEffect.Get());
     m_sdrOverlayEffect->SetInputEffect(0, m_gainMapMergeEffect.Get());
 
@@ -605,6 +614,7 @@ void HDRImageViewerRenderer::ReleaseImageDependentResources()
     m_hdrTonemapEffect.Reset();
     m_sdrOverlayEffect.Reset();
     m_heatmapEffect.Reset();
+    m_heatmapLiliumEffect.Reset();
     m_maxLuminanceEffect.Reset();
     m_histogramPrescale.Reset();
     m_histogramEffect.Reset();

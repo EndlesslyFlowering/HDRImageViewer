@@ -152,6 +152,7 @@
     <ClInclude Include="LibHeifHelpers.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="RenderEffects\LuminanceHeatmapEffect.h" />
+    <ClInclude Include="RenderEffects\LuminanceHeatmapLiliumEffect.h" />
     <ClInclude Include="MagicConstants.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="HDRImageViewerRenderer.h" />
@@ -173,6 +174,7 @@
     </ClCompile>
     <ClCompile Include="HDRImageViewerRenderer.cpp" />
     <ClCompile Include="RenderEffects\LuminanceHeatmapEffect.cpp" />
+    <ClCompile Include="RenderEffects\LuminanceHeatmapLiliumEffect.cpp" />
     <ClCompile Include="RenderEffects\MaxLuminanceEffect.cpp" />
     <ClCompile Include="RenderEffects\SimpleTonemapEffect.cpp" />
     <ClCompile Include="RenderEffects\SphereMapEffect.cpp" />
@@ -239,6 +241,29 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="RenderEffects\LuminanceHeatmapEffect.hlsl">
+      <FileType>Document</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </DeploymentContent>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <CompileD2DCustomEffect Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileD2DCustomEffect>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <CompileD2DCustomEffect Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</CompileD2DCustomEffect>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
+      <CompileD2DCustomEffect Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</CompileD2DCustomEffect>
+      <CompileD2DCustomEffect Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</CompileD2DCustomEffect>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">4.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="RenderEffects\LuminanceHeatmapLiliumEffect.hlsl">
       <FileType>Document</FileType>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </DeploymentContent>

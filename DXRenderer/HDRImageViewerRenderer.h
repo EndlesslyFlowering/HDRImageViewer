@@ -11,6 +11,7 @@
 #include "Common\DeviceResources.h"
 #include "RenderEffects\SdrOverlayEffect.h"
 #include "RenderEffects\LuminanceHeatmapEffect.h"
+#include "RenderEffects\LuminanceHeatmapLiliumEffect.h"
 #include "RenderEffects\SphereMapEffect.h"
 #include "RenderEffects\MaxLuminanceEffect.h"
 #include "RenderOptions.h"
@@ -109,6 +110,7 @@ namespace DXRenderer
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_hdrTonemapEffect;
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_sdrOverlayEffect;
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_heatmapEffect;
+        Microsoft::WRL::ComPtr<ID2D1Effect>                     m_heatmapLiliumEffect;
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_maxLuminanceEffect;
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_sphereMapEffect;
         Microsoft::WRL::ComPtr<ID2D1Effect>                     m_histogramPrescale;
