@@ -728,23 +728,23 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
     if (m_imageLoader != nullptr && panelSize.Width != 0 && panelSize.Height != 0 &&
         m_imageLoader->GetState() == ImageLoaderState::LoadingSucceeded)
     {
-        // Set image to be letterboxed in the window, up to the max allowed scale factor.
-        float letterboxZoom = min(
-            panelSize.Width / m_imageInfo.pixelSize.Width,
-            panelSize.Height / m_imageInfo.pixelSize.Height);
-
+//        // Set image to be letterboxed in the window, up to the max allowed scale factor.
+//        float letterboxZoom = min(
+//            panelSize.Width / m_imageInfo.pixelSize.Width,
+//            panelSize.Height / m_imageInfo.pixelSize.Height);
+//
         m_zoom = 1;
-
-        // SphereMap needs to know the pixel size of the image.
-        IFT(m_sphereMapEffect->SetValue(
-                SPHEREMAP_PROP_SCENESIZE,
-                D2D1::SizeF(m_imageInfo.pixelSize.Width * m_zoom, m_imageInfo.pixelSize.Height * m_zoom)));
-
-        // Center the image.
-        m_imageOffset = D2D1::Point2F(
-            (panelSize.Width - (m_imageInfo.pixelSize.Width * m_zoom)) / 2.0f,
-            (panelSize.Height - (m_imageInfo.pixelSize.Height * m_zoom)) / 2.0f
-        );
+//
+//        // SphereMap needs to know the pixel size of the image.
+//        IFT(m_sphereMapEffect->SetValue(
+//                SPHEREMAP_PROP_SCENESIZE,
+//                D2D1::SizeF(m_imageInfo.pixelSize.Width * m_zoom, m_imageInfo.pixelSize.Height * m_zoom)));
+//
+//        // Center the image.
+//        m_imageOffset = D2D1::Point2F(
+//            (panelSize.Width - (m_imageInfo.pixelSize.Width * m_zoom)) / 2.0f,
+//            (panelSize.Height - (m_imageInfo.pixelSize.Height * m_zoom)) / 2.0f
+//        );
 
         UpdateImageTransformState();
 
@@ -754,6 +754,11 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
             // we can't compute it until the full effect graph is hooked up, which is here.
             ComputeHdrMetadata();
         }
+
+        // Set image to be letterboxed in the window, up to the max allowed scale factor.
+        float letterboxZoom = min(
+            panelSize.Width / m_imageInfo.pixelSize.Width,
+            panelSize.Height / m_imageInfo.pixelSize.Height);
 
         m_zoom = min(sc_MaxZoom, letterboxZoom);
 
@@ -768,6 +773,8 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
             (panelSize.Height - (m_imageInfo.pixelSize.Height * m_zoom)) / 2.0f
         );
 
+        // second time calling this to set the actual state
+        // this whole thing probably needs a bigger rewrite/refactor
         UpdateImageTransformState();
     }
 
