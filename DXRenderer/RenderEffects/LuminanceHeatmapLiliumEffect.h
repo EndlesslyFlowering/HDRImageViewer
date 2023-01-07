@@ -11,7 +11,6 @@
 
 // Not a tonemapper, instead produces a colorized heatmap of the luminance of the image in SDR range.
 // See LuminanceHeatmapLiliumEffect.hlsl for the nits --> color mapping.
-//98c7f437-3399-4626-9840-3b6a67cd2473
 DEFINE_GUID(GUID_LuminanceHeatmapLiliumPixelShader, /* 7d16646f-bc2f-456e-878e-416ea0501cd0 */
     0x7d16646f,
     0xbc2f,
