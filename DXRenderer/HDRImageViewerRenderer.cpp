@@ -525,19 +525,19 @@ void HDRImageViewerRenderer::CreateHistogramResources()
 
     // We need to preprocess the image data before running the histogram.
     // 1. Spatial downscale to reduce the amount of processing and limit intermediate texture size.
-    IFT(context->CreateEffect(CLSID_D2D1Scale, &m_histogramPrescale));
-
-    // Cap histogram pixel size to 2048 along the larger dimension.
-    float pixScale = min(0.5f, 2048.0f / max(m_imageInfo.pixelSize.Width, m_imageInfo.pixelSize.Height));
-
-    IFT(m_histogramPrescale->SetValue(D2D1_SCALE_PROP_SCALE, D2D1::Vector2F(pixScale, pixScale)));
-    IFT(m_histogramPrescale->SetValue(
-        D2D1_SCALE_PROP_INTERPOLATION_MODE,
-        D2D1_SCALE_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC));
-
-    // The right place to compute HDR metadata is after color management to the
-    // image's native colorspace but before any tonemapping or adjustments for the display.
-    m_histogramPrescale->SetInputEffect(0, m_gainMapMergeEffect.Get());
+//    IFT(context->CreateEffect(CLSID_D2D1Scale, &m_histogramPrescale));
+//
+//    // Cap histogram pixel size to 2048 along the larger dimension.
+//    float pixScale = min(0.5f, 2048.0f / max(m_imageInfo.pixelSize.Width, m_imageInfo.pixelSize.Height));
+//
+//    IFT(m_histogramPrescale->SetValue(D2D1_SCALE_PROP_SCALE, D2D1::Vector2F(pixScale, pixScale)));
+//    IFT(m_histogramPrescale->SetValue(
+//        D2D1_SCALE_PROP_INTERPOLATION_MODE,
+//        D2D1_SCALE_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC));
+//
+//    // The right place to compute HDR metadata is after color management to the
+//    // image's native colorspace but before any tonemapping or adjustments for the display.
+//    m_histogramPrescale->SetInputEffect(0, m_gainMapMergeEffect.Get());
 
     // 2. Convert scRGB data into luminance (nits).
     // 3. Normalize color values. Histogram operates on [0-1] numeric range,
@@ -546,16 +546,16 @@ void HDRImageViewerRenderer::CreateHistogramResources()
     ComPtr<ID2D1Effect> histogramMatrix;
     IFT(context->CreateEffect(CLSID_D2D1ColorMatrix, &histogramMatrix));
 
-    histogramMatrix->SetInputEffect(0, m_histogramPrescale.Get());
+    histogramMatrix->SetInputEffect(0, m_gainMapMergeEffect.Get());
 
     float scale = sc_histMaxNits / D2D1_SCENE_REFERRED_SDR_WHITE_LEVEL;
 
     D2D1_MATRIX_5X4_F rgbtoYnorm = D2D1::Matrix5x4F(
-        0.2126f / scale, 0, 0, 0,
-        0.7152f / scale, 0, 0, 0,
-        0.0722f / scale, 0, 0, 0,
-        0              , 0, 0, 1,
-        0              , 0, 0, 0);
+        0.212636821677324  / scale, 0, 0, 0,
+        0.715182981841251  / scale, 0, 0, 0,
+        0.0721801964814255 / scale, 0, 0, 0,
+        0                         , 0, 0, 1,
+        0                         , 0, 0, 0);
     // 1st column: [R] output, contains normalized Y (CIEXYZ).
     // 2nd column: [G] output, unused.
     // 3rd column: [B] output, unused.
@@ -616,7 +616,7 @@ void HDRImageViewerRenderer::ReleaseImageDependentResources()
     m_heatmapEffect.Reset();
     m_heatmapLiliumEffect.Reset();
     m_maxLuminanceEffect.Reset();
-    m_histogramPrescale.Reset();
+//    m_histogramPrescale.Reset();
     m_histogramEffect.Reset();
     m_sphereMapEffect.Reset();
     m_mapGamutToPanel.Reset();
@@ -733,7 +733,7 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
             panelSize.Width / m_imageInfo.pixelSize.Width,
             panelSize.Height / m_imageInfo.pixelSize.Height);
 
-        m_zoom = min(sc_MaxZoom, letterboxZoom);
+        m_zoom = 1;
 
         // SphereMap needs to know the pixel size of the image.
         IFT(m_sphereMapEffect->SetValue(
@@ -754,6 +754,21 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
             // we can't compute it until the full effect graph is hooked up, which is here.
             ComputeHdrMetadata();
         }
+
+        m_zoom = min(sc_MaxZoom, letterboxZoom);
+
+        // SphereMap needs to know the pixel size of the image.
+        IFT(m_sphereMapEffect->SetValue(
+                SPHEREMAP_PROP_SCENESIZE,
+                D2D1::SizeF(m_imageInfo.pixelSize.Width * m_zoom, m_imageInfo.pixelSize.Height * m_zoom)));
+
+        // Center the image.
+        m_imageOffset = D2D1::Point2F(
+            (panelSize.Width - (m_imageInfo.pixelSize.Width * m_zoom)) / 2.0f,
+            (panelSize.Height - (m_imageInfo.pixelSize.Height * m_zoom)) / 2.0f
+        );
+
+        UpdateImageTransformState();
     }
 
     return m_imageCLL;
@@ -834,9 +849,9 @@ void HDRImageViewerRenderer::UpdateGamutTransforms()
     auto MDisplay = Matrix(3, 3);
 
     M709.M = {
-        0.4124564, 0.3575761, 0.1804375,
-        0.2126729, 0.7151522, 0.0721750,
-        0.0193339, 0.1191920, 0.9503041
+        0.412386563252992,  0.357591490920625, 0.180450491203564,
+        0.212636821677324,  0.715182981841251, 0.0721801964814255,
+        0.0193306201524840, 0.119197163640208, 0.950372587005435
     };
 
     XYZDisplay.M[0] = m_dispInfo->RedPrimary.X / m_dispInfo->RedPrimary.Y;
@@ -909,7 +924,7 @@ void HDRImageViewerRenderer::ComputeHdrMetadata()
     // MaxCLL is nominally calculated for the single brightest pixel in a frame.
     // But we take a slightly more conservative definition that takes the 99.99th percentile
     // to account for extreme outliers in the image.
-    float maxCLLPercent = 0.9999f;
+    //float maxCLLPercent = 0.9999f;
 
     auto ctx = m_deviceResources->GetD2DDeviceContext();
 
@@ -944,7 +959,7 @@ void HDRImageViewerRenderer::ComputeHdrMetadata()
         runningSum += histogramData[i];
 
         // Note the inequality (<) is the opposite of the next if block.
-        if (runningSum < 1.0f - maxCLLPercent)
+        if (runningSum <= 0.f)
         {
             maxCLLbin = i;
         }
