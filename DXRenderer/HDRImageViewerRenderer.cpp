@@ -733,6 +733,9 @@ ImageCLL HDRImageViewerRenderer::FitImageToWindow(bool computeMetadata)
 //            panelSize.Width / m_imageInfo.pixelSize.Width,
 //            panelSize.Height / m_imageInfo.pixelSize.Height);
 //
+        // idk if this is actually needed
+        // maybe test it :)
+        // m_zoom gets used in UpdateImageTransformState() though
         m_zoom = 1;
 //
 //        // SphereMap needs to know the pixel size of the image.
