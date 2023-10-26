@@ -25,7 +25,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{6d2ac860-ccec-4f49-8fc4-f2b01251b8ac}</ProjectGuid>
     <RootNamespace>HeifUtil</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
