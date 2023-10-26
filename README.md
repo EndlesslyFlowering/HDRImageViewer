@@ -6,6 +6,12 @@
 - open the `_install.ps1` file inside the unpacked folder. this will install it
 - done :)
 
+if you get the error that `Microsoft.UI.Xaml.2.8` was not found, follow these instructions:
+- [install winget](https://apps.microsoft.com/detail/9NBLGGH4NNS1) if not already installed
+- enable the execution alias of it (Settings -> Apps -> Advanced App settings)
+- open the `_install.ps1` file again
+- it should install the needed dependency
+
 ## Features of this fork
 
 - remove the maxCLL calculation being limited by the windows size as best as possible
