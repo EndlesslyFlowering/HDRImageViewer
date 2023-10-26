@@ -1,3 +1,21 @@
+# How to install this fork
+
+- for safety uninstall the original **HDR + WCG Image Viewer** first
+- [enable developer mode](https://www.minitool.com/news/turn-on-off-developer-mode-windows-11-10.html)
+- unpack the archive somewhere safe as you cannot delete it after installing the app
+- open the `_install.ps1` file inside the unpacked folder. this will install it
+- done :)
+
+## Features of this fork
+
+- remove the maxCLL calculation being limited by the windows size as best as possible
+- a lot more accurate maxCLL detection
+- added my heatmap as an additional option
+- more accurate colour space conversions
+- app will not crash with images that are too large anymore (thx [@Pumbo](https://github.com/Filoppi))
+
+---
+
 <a name="readme-top"></a>
 
 <br />
