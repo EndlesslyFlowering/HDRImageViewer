@@ -20,7 +20,7 @@ D2D_PS_ENTRY(main)
     float4 output = D2DGetInput(0);
 
     // Calculate luminance in nits
-    float nits = dot(float3(0.2126f, 0.7152f, 0.0722f), output.rgb) * 80.0f;
+    float nits = dot(float3(asfloat(0x3e599b82), asfloat(0x3f37212e), asfloat(0x3d93bf90)), output.rgb) * 80.f;
 
     // Detect if luminance is outside the max luminance of display
     float isOutsideMaxLum = step(maxLuminance - nits, nits - maxLuminance); // 1 = out, 0 = in

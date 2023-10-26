@@ -551,11 +551,11 @@ void HDRImageViewerRenderer::CreateHistogramResources()
     float scale = sc_histMaxNits / D2D1_SCENE_REFERRED_SDR_WHITE_LEVEL;
 
     D2D1_MATRIX_5X4_F rgbtoYnorm = D2D1::Matrix5x4F(
-        0.212636821677324  / scale, 0, 0, 0,
-        0.715182981841251  / scale, 0, 0, 0,
-        0.0721801964814255 / scale, 0, 0, 0,
-        0                         , 0, 0, 1,
-        0                         , 0, 0, 0);
+        0.2125072777271270751953125 / scale, 0, 0, 0,
+        0.71535003185272216796875   / scale, 0, 0, 0,
+        0.07214272022247314453125   / scale, 0, 0, 0,
+        0                                  , 0, 0, 1,
+        0                                  , 0, 0, 0);
     // 1st column: [R] output, contains normalized Y (CIEXYZ).
     // 2nd column: [G] output, unused.
     // 3rd column: [B] output, unused.
@@ -859,9 +859,9 @@ void HDRImageViewerRenderer::UpdateGamutTransforms()
     auto MDisplay = Matrix(3, 3);
 
     M709.M = {
-        0.412386563252992,  0.357591490920625, 0.180450491203564,
-        0.212636821677324,  0.715182981841251, 0.0721801964814255,
-        0.0193306201524840, 0.119197163640208, 0.950372587005435
+        0.4121353328227996826171875,    0.357675015926361083984375,    0.180356800556182861328125,
+        0.2125072777271270751953125,    0.71535003185272216796875,     0.07214272022247314453125,
+        0.0193188432604074478149414062, 0.119225002825260162353515625, 0.949879109859466552734375
     };
 
     XYZDisplay.M[0] = m_dispInfo->RedPrimary.X / m_dispInfo->RedPrimary.Y;

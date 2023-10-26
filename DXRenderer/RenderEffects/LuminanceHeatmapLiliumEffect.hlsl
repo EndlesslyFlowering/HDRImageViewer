@@ -17,7 +17,7 @@
 #include "d2d1effecthelpers.hlsli"
 
 
-// STOP0 being pure black and not needed
+#define STOP0_NITS 0.f
 #define STOP1_NITS 100.f
 #define STOP2_NITS 203.f
 #define STOP3_NITS 400.f
@@ -61,53 +61,65 @@ D2D_PS_ENTRY(main)
 
     // 1: Calculate luminance in nits.
     // Input is in scRGB. First convert to Y from CIEXYZ, then scale by whitepoint of 80 nits.
-    float Y = dot(float3(0.2126f, 0.7152f, 0.0722f), input.rgb) * 80.0f;
+    float Y = dot(float3(asfloat(0x3e599b82), asfloat(0x3f37212e), asfloat(0x3d93bf90)), input.rgb) * 80.f;
 
-    float4 output = float4(0.f, 0.f, 0.f, 1.f);
+    float4 output;
 
-    if (Y <= STOP1_NITS) // <= 100nits
+    if (Y < STOP0_NITS) // < 0 nits
+    {
+        output.r = 0.f;
+        output.g = 0.f;
+        output.b = 6.25f;
+    }
+    else if (Y <= STOP1_NITS) // <= 100 nits
     {
         //shades of grey
-        const float currentGreyscale = Y > 0.f ? Y / STOP1_NITS * SCALE_GREYSCALE : 0.f; // protect against values below 0
-        output.r = currentGreyscale;
-        output.g = currentGreyscale;
-        output.b = currentGreyscale;
+        const float currentGreyscale = Y / STOP1_NITS * SCALE_GREYSCALE;
+        output.rgb = currentGreyscale;
     }
-    else if (Y <= STOP2_NITS) // <= 203nits
+    else if (Y <= STOP2_NITS) // <= 203 nits
     {
         //cyan to green
         output.r = 0.f;
         output.g = 1.f;
         output.b = heatmap_fade_out(Y, STOP1_NITS, STOP2_NITS);
     }
-    else if (Y <= STOP3_NITS) // <= 400nits
+    else if (Y <= STOP3_NITS) // <= 400 nits
     {
         //green to yellow
         output.r = heatmap_fade_in(Y, STOP2_NITS, STOP3_NITS);
         output.g = 1.f;
         output.b = 0.f;
     }
-    else if (Y <= STOP4_NITS) // <= 1000nits
+    else if (Y <= STOP4_NITS) // <= 1000 nits
     {
         //yellow to red
         output.r = 1.f;
         output.g = heatmap_fade_out(Y, STOP3_NITS, STOP4_NITS);
         output.b = 0.f;
     }
-    else if (Y <= STOP5_NITS) // <= 4000nits
+    else if (Y <= STOP5_NITS) // <= 4000 nits
     {
         //red to pink
         output.r = 1.f;
         output.g = 0.f;
         output.b = heatmap_fade_in(Y, STOP4_NITS, STOP5_NITS);
     }
-    else // > 4000nits
+    else if (Y <= STOP6_NITS) // <= 10000 nits
     {
         //pink to blue
-        output.r = Y <= 10000.f ? heatmap_fade_out(Y, STOP5_NITS, STOP6_NITS) : 0.f; // protect against values above 10000 nits
+        output.r = heatmap_fade_out(Y, STOP5_NITS, STOP6_NITS); // protect against values above 10000 nits
         output.g = 0.f;
         output.b = 1.f;
     }
+    else // > 10000 nits
+    {
+        output.r = 6.25f;
+        output.g = 0.f;
+        output.b = 0.f;
+    }
+
+    output.a = 1.f;
 
     return output;
 }

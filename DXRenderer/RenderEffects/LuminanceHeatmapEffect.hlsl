@@ -65,7 +65,7 @@ D2D_PS_ENTRY(main)
 
     // 1: Calculate luminance in nits.
     // Input is in scRGB. First convert to Y from CIEXYZ, then scale by whitepoint of 80 nits.
-    float nits = dot(float3(0.2126f, 0.7152f, 0.0722f), input.rgb) * 80.0f;
+    float nits = dot(float3(asfloat(0x3e599b82), asfloat(0x3f37212e), asfloat(0x3d93bf90)), input.rgb) * 80.f;
 
     // 2: Determine which gradient segment will be used.
     // Only one of useSegmentN will be 1 (true) for a given nits value.
