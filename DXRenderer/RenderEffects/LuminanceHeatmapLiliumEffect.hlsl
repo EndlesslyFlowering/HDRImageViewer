@@ -61,7 +61,7 @@ D2D_PS_ENTRY(main)
 
     // 1: Calculate luminance in nits.
     // Input is in scRGB. First convert to Y from CIEXYZ, then scale by whitepoint of 80 nits.
-    float Y = dot(float3(asfloat(0x3e599b82), asfloat(0x3f37212e), asfloat(0x3d93bf90)), input.rgb) * 80.f;
+    float Y = dot(float3(0.2126390039920806884765625f, 0.715168654918670654296875f, 0.072192318737506866455078125f), input.rgb) * 80.f;
 
     float4 output;
 
