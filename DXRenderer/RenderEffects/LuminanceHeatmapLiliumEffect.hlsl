@@ -67,9 +67,7 @@ D2D_PS_ENTRY(main)
 
     if (Y < STOP0_NITS) // < 0 nits
     {
-        output.r = 0.f;
-        output.g = 0.f;
-        output.b = 6.25f;
+        output.rgb = 0.f;
     }
     else if (Y <= STOP1_NITS) // <= 100 nits
     {
@@ -108,7 +106,7 @@ D2D_PS_ENTRY(main)
     else if (Y <= STOP6_NITS) // <= 10000 nits
     {
         //pink to blue
-        output.r = heatmap_fade_out(Y, STOP5_NITS, STOP6_NITS); // protect against values above 10000 nits
+        output.r = heatmap_fade_out(Y, STOP5_NITS, STOP6_NITS);
         output.g = 0.f;
         output.b = 1.f;
     }
