@@ -31,7 +31,7 @@ D2D_PS_ENTRY(main)
     float isInsideSdr = 1 - isOutsideSdr;                                                   // 0 = out, 1 = in
 
     // Convert all sRGB/SDR colors to grayscale.
-    float lum = dot(float3(asfloat(0x3e599b82), asfloat(0x3f37212e), asfloat(0x3d93bf90)), output.rgb);
+    float lum = dot(float3(0.2126390039920806884765625f, 0.715168654918670654296875f, 0.072192318737506866455078125f), output.rgb);
     float4 insideSdrColor = float4(lum, lum, lum, 1.0f);
 
     // Pass through wide gamut and high dynamic range colors.
