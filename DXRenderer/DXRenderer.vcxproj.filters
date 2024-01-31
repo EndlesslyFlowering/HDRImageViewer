@@ -42,6 +42,9 @@
     <ClCompile Include="RenderEffects\LuminanceHeatmapLiliumEffect.cpp">
       <Filter>Resources\RenderEffects</Filter>
     </ClCompile>
+    <ClCompile Include="RenderEffects\ColourSpaceMapLiliumEffect.cpp">
+      <Filter>Resources\RenderEffects</Filter>
+    </ClCompile>
     <ClCompile Include="ImageExporter.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="RenderEffects\MaxLuminanceEffect.cpp">
@@ -73,6 +76,9 @@
     <ClInclude Include="RenderEffects\LuminanceHeatmapLiliumEffect.h">
       <Filter>Resources\RenderEffects</Filter>
     </ClInclude>
+    <ClInclude Include="RenderEffects\ColourSpaceMapLiliumEffect.h">
+      <Filter>Resources\RenderEffects</Filter>
+    </ClInclude>
     <ClInclude Include="RenderEffects\SimpleTonemapEffect.h">
       <Filter>Resources\RenderEffects</Filter>
     </ClInclude>
@@ -94,6 +100,9 @@
       <Filter>Resources\RenderEffects</Filter>
     </FxCompile>
     <FxCompile Include="RenderEffects\LuminanceHeatmapLiliumEffect.hlsl">
+      <Filter>Resources\RenderEffects</Filter>
+    </FxCompile>
+    <FxCompile Include="RenderEffects\ColourSpaceMapLiliumEffect.hlsl">
       <Filter>Resources\RenderEffects</Filter>
     </FxCompile>
     <FxCompile Include="RenderEffects\SphereMapEffect.hlsl">
