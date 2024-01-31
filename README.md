@@ -21,6 +21,8 @@ if you get the error that `Microsoft.UI.Xaml.2.8` was not found, follow these in
 - more accurate colour space conversions
 - app will not crash with images that are too large anymore (thx [@Pumbo](https://github.com/Filoppi))
 
+[explanation of heatmap and colour space map colours](Lilium.md)
+
 ---
 
 <a name="readme-top"></a>
