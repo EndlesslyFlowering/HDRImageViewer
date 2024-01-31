@@ -17,6 +17,7 @@ if you get the error that `Microsoft.UI.Xaml.2.8` was not found, follow these in
 - remove the maxCLL calculation being limited by the windows size as best as possible
 - a lot more accurate maxCLL detection
 - added my heatmap as an additional option
+- added my colour space map
 - more accurate colour space conversions
 - app will not crash with images that are too large anymore (thx [@Pumbo](https://github.com/Filoppi))
 
