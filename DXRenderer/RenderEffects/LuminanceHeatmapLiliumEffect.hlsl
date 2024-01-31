@@ -1,13 +1,5 @@
-//********************************************************* 
-// 
-// Copyright (c) Microsoft. All rights reserved. 
-// This code is licensed under the MIT License (MIT). 
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF 
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY 
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR 
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT. 
-// 
-//*********************************************************
+// ported from ReShade HDR analysis shader
+// for license see here: https://github.com/EndlesslyFlowering/ReShade_HDR_shaders/blob/master/LICENSE
 
 // Custom effects using pixel shaders should use HLSL helper functions defined in
 // d2d1effecthelpers.hlsli to make use of effect shader linking.
