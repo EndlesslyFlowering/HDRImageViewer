@@ -1,3 +1,5 @@
+# fork has been archived due to me not wanting to continue work on it because I do not like the codebase and its reliance on too many Microsoft specific features
+
 # How to install this fork
 
 - for safety uninstall the original **HDR + WCG Image Viewer** first
